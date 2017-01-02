@@ -1,5 +1,9 @@
 #include "clipboardmanager.h"
 #include "cliptrayicon.h"
+
+#include <QJsonDocument>
+#include <QJsonObject>
+
 #include <QApplication>
 #include <QFile>
 #include <QDir>
@@ -13,11 +17,13 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  QString dbpath = QDir::homePath();
-    dbpath.append(QDir::separator());
-    dbpath.append(".zclip.db");
+  QString dbpath = QDir::homePath(); dbpath.append(QDir::separator());
+  QString cfpath = QString(dbpath);
 
-  DataBase* dbman = new DataBase(dbpath);
+    dbpath.append(".zclip.db");
+    cfpath.append(".zclip");
+
+    DataBase* dbman = new DataBase(dbpath);
 
   if(!dbman->open()) {
      qDebug() << "Ошибка при открытии базы данных!";
@@ -31,9 +37,24 @@ int main(int argc, char *argv[]) {
               "`stamp` TIMESTAMP DEFAULT     CURRENT_TIMESTAMP"
             ");");
 
-  ClipboardManager *cbm = new ClipboardManager(dbman);
+  ClipTrayIcon *tray = new ClipTrayIcon(new ClipboardManager(dbman), dbman);
 
-  ClipTrayIcon *tray = new ClipTrayIcon(cbm, dbman);
+  QByteArray jsonconf = "{\"hotkey\":\"Alt+X\"}";
+
+  QFile jsonf(cfpath);
+  if (QFile::exists(cfpath)) {
+      if (jsonf.open(QIODevice::ReadOnly)) {
+          jsonconf = jsonf.readAll();
+      }
+  } else {
+      if (jsonf.open(QIODevice::WriteOnly)) {
+          jsonf.write(jsonconf);
+      }
+  }
+
+  QJsonObject config = (new QJsonDocument(QJsonDocument::fromJson(jsonconf)))->object();
+
+  tray->setHotkey(config["hotkey"].toString());
 
   return a.exec();
 }

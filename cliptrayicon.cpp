@@ -15,7 +15,7 @@ ClipTrayIcon::ClipTrayIcon(ClipboardManager *clipboard, DataBase* dbman, QObject
 
   // -----------------------------------------------------------------------------------------------------------------
   shortkey = new QxtGlobalShortcut();
-  shortkey->setShortcut(QKeySequence("Alt+X"));
+
 
   // -----------------------------------------------------------------------------------------------------------------
   QIcon icon = QIcon(":/resources/icon/clipboard.svg");
@@ -28,6 +28,10 @@ ClipTrayIcon::ClipTrayIcon(ClipboardManager *clipboard, DataBase* dbman, QObject
   // -----------------------------------------------------------------------------------------------------------------
   history = new HistoryDialog(dbman, clipboard);
   history->setWindowIcon(icon);
+}
+
+void ClipTrayIcon::setHotkey(QString s) {
+  shortkey->setShortcut(QKeySequence(s));
 }
 
 void ClipTrayIcon::onInsert() {

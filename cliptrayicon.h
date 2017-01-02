@@ -19,6 +19,7 @@ class ClipTrayIcon : public QObject {
   public:
     explicit ClipTrayIcon(ClipboardManager *clipboard, DataBase* dbman, QObject *parent = 0);
     void setTooltipText(QString s);
+    void setHotkey(QString s);
 
   private:
     QxtGlobalShortcut *shortkey;
