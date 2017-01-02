@@ -2,11 +2,12 @@
 #define HISTORYDIALOG_H
 
 #include <QSortFilterProxyModel>
+#include <QtSql/QSqlTableModel>
 #include <QStandardItemModel>
 #include <QCloseEvent>
 #include <QDialog>
 #include <QDebug>
-#include <QtSql/QSqlTableModel>
+#include <QFile>
 
 #include "clipboardmanager.h"
 #include "database.h"

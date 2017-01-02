@@ -1,6 +1,5 @@
 #include "historydialog.h"
 #include "ui_historydialog.h"
-#include <QAbstractTableModel>
 
 HistoryDialog::HistoryDialog(DataBase* dbman, ClipboardManager *clipboard, QWidget *parent) :
   QDialog(parent), ui(new Ui::HistoryDialog) {
@@ -10,53 +9,10 @@ HistoryDialog::HistoryDialog(DataBase* dbman, ClipboardManager *clipboard, QWidg
   this->dbman = dbman;
 
   // -----------------------------------------------------------------------------------------------------------------
-  QString style = ""
-      "QLineEdit {"
-        "border-style: none;"
-        "color: #8F8F8F;"
-        "selection-color: gray;"
-        "background: #1F1F1F;"
-        "selection-background-color: #1E1542;"
-        "border-top: 1px solid black;"
-        "border-bottom: 1px solid black;"
-      "}"
-      ""
-      "QTableView {"
-        "background: #1F1F1F;"
-        "alternate-background-color: #2F2F2F;"
-        "color: #8F8F8F;"
-        "border-style: none;"
-      "}"
-      ""
-      "QHeaderView {"
-        "background: #1F1F1F;"
-        "color: #8F8F8F;"
-        "border-style: none;"
-      "}"
-      ""
-      "QTableView::item:selected {"
-        "background: #1E1542;"
-        "color: gray;"
-      "}"
-      ""
-      "QScrollBar:vertical {"
-        "background: #1F1F1F;"
-        "border-style: none;"
-        "border-left: 1px solid #0F0F0F;"
-        "width: 6px;"
-      "}"
-      ""
-      "QScrollBar::handle:vertical {"
-        "background: #2F2F2F;"
-        "min-height: 20px;"
-      "}"
-      "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
-         "background: #1F1F1F;"
-        "border-left: 1px solid #0F0F0F;"
-      "}"
-      "";
+  QFile fstyle(":/resources/qss/historydialog.qss");
+    fstyle.open(QFile::ReadOnly);
 
-  this->setStyleSheet(style);
+  this->setStyleSheet(fstyle.readAll());
   // -----------------------------------------------------------------------------------------------------------------
   this->setWindowTitle("zClip");
   this->setMinimumSize(400, 500);

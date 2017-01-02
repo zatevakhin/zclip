@@ -18,7 +18,7 @@ ClipTrayIcon::ClipTrayIcon(ClipboardManager *clipboard, DataBase* dbman, QObject
   shortkey->setShortcut(QKeySequence("Alt+X"));
 
   // -----------------------------------------------------------------------------------------------------------------
-  QIcon icon = QIcon(":/icon/clipboard.svg");
+  QIcon icon = QIcon(":/resources/icon/clipboard.svg");
   trayIcon->setIcon(icon);
   this->onInsert();
   trayIcon->show();
