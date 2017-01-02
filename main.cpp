@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   DataBase* dbman = new DataBase(dbpath);
 
   if(!dbman->open()) {
-     qDebug() << "Ошибка при открытии базы даннх!";
+     qDebug() << "Ошибка при открытии базы данных!";
      return 1;
   }
 
