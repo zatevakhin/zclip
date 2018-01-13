@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/icon/clipboard.svg</file>
-        <file>resources/qss/historydialog.qss</file>
     </qresource>
 </RCC>

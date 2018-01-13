@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CHistoryDialog</class>
+ <widget class="QDialog" name="CHistoryDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>zClip</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/resources/icon/clipboard.svg</normaloff>:/resources/icon/clipboard.svg</iconset>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+QLineEdit {
+  border-style: none;
+  color: #8F8F8F;
+  selection-color: gray;
+  background: #1F1F1F;
+  selection-background-color: #1E1542;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+QTableView {
+  background: #1F1F1F;
+  alternate-background-color: #2F2F2F;
+  color: #8F8F8F;
+  border-style: none;
+}
+
+QHeaderView {
+  background: #1F1F1F;
+  color: #8F8F8F;
+  border-style: none;
+}
+
+QTableView::item:selected {
+  background: #1E1542;
+  color: gray;
+}
+
+QScrollBar:vertical {
+  background: #1F1F1F;
+  border-style: none;
+  border-left: 1px solid #0F0F0F;
+  width: 6px;
+}
+
+QScrollBar::handle:vertical {
+  background: #2F2F2F;
+  min-height: 20px;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+   background: #1F1F1F;
+   border-left: 1px solid #0F0F0F;
+   subcontrol-origin: margin;
+}
+
+ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+     background: #1F1F1F;
+ }
+</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>30</y>
+     <width>281</width>
+     <height>421</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="placeholderText">
+       <string>Search...</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTableView" name="tableView"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
