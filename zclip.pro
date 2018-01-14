@@ -6,8 +6,6 @@
 
 QT       += core gui sql gui-private
 
-#LIBS += -lX11
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = zclip

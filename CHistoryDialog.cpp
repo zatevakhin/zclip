@@ -9,7 +9,6 @@ CHistoryDialog::CHistoryDialog()
 {
    m_ui->setupUi(this);
    setLayout(m_ui->verticalLayout);
-   setFocusPolicy(Qt::TabFocus);
 
    initializeTableModel();
    initializeSignals();
@@ -57,9 +56,13 @@ bool CHistoryDialog::eventFilter(QObject *obj, QEvent *event)
    if (event->type() == QEvent::KeyPress)
    {
       auto keyEvent = static_cast<QKeyEvent*>(event);
-      if (keyEvent->key() == Qt::Key_Tab)
+
+      bool isTab = keyEvent->key() == Qt::Key_Tab;
+      bool isBackTab = keyEvent->key() == Qt::Key_Backtab;
+
+      if (isBackTab || isTab)
       {
-         focusPreviousChild();
+         focusNextChild();
          return true;
       }
    }
@@ -95,7 +98,6 @@ void CHistoryDialog::initializeTableModel()
    m_ui->tableView->verticalHeader()->hide();
 
    m_ui->tableView->installEventFilter(this);
-
 }
 
 void CHistoryDialog::initializeSignals()
@@ -109,7 +111,6 @@ void CHistoryDialog::initializeSignals()
             m_ui->tableView, SIGNAL(doubleClicked(const QModelIndex &)),
             this, SLOT(onItemSelected(const QModelIndex &))
             );
-
 }
 
 void CHistoryDialog::onSearch(const QString &query)
