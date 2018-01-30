@@ -1,6 +1,6 @@
 #include "CHistoryDialog.hpp"
 #include "ui_CHistoryDialog.h"
-
+#include <QDebug>
 
 CHistoryDialog::CHistoryDialog()
    : QDialog(Q_NULLPTR)
@@ -31,12 +31,11 @@ void CHistoryDialog::keyPressEvent(QKeyEvent *event)
    {
       case Qt::Key_Enter:
       case Qt::Key_Return:
-      {
-         auto index = m_ui->tableView->currentIndex();
-         emit getItemById(index.sibling(index.row(), 0).data().toInt());
-         hide();
+         onItemSelected(m_ui->tableView->currentIndex());
          break;
-      }
+      case Qt::Key_Delete:
+         onItemRemove(m_ui->tableView->currentIndex());
+         break;
       case Qt::Key_Home:
          m_ui->tableView->scrollToTop();
          break;
@@ -122,5 +121,11 @@ void CHistoryDialog::onItemSelected(const QModelIndex& index)
 {
    emit getItemById(index.sibling(index.row(), 0).data().toInt());
    hide();
+}
+
+void CHistoryDialog::onItemRemove(const QModelIndex& index)
+{
+   emit removeItemById(index.sibling(index.row(), 0).data().toInt());
+   m_ui->tableView->setRowHidden(index.row(), true);
 }
 

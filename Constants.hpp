@@ -5,11 +5,10 @@ namespace NConstants
 {
 
 static constexpr const char * const DATABASE_FILE    = ".zclip.db";
-static constexpr const char * const SETTINGS_FILE    = ".zclip";
 static constexpr const char * const TABLE_NAME       = "clipboard";
 
-static constexpr const char * const DEFAULT_SETTINGS = \
-      "{\"shortcut\":\"Alt+X\"}";
+static constexpr const char * const SHOW_HISTORY = \
+      "shortcuts/show-history";
 
 static constexpr const char * const DATABASE_CREATE_QUERY = \
       "CREATE TABLE IF NOT EXISTS `%1` ("
@@ -26,6 +25,9 @@ static constexpr const char * const DATABASE_SELECT_TEXT_QUERY = \
 
 static constexpr const char * const DATABASE_COUNT_QUERY = \
       "SELECT COUNT(*) as count FROM `%1`";
+
+static constexpr const char * const DATABASE_REMOVE_ITEM = \
+      "DELETE FROM `%1` WHERE id = ?";
 
 static constexpr const char * const TOOLTIP_TEXT_TEMPLATE = \
       "Clipboard manager:\n"

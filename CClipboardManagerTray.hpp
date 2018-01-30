@@ -8,13 +8,11 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 
-#include <QJsonDocument>
-#include <QJsonObject>
-
 #include <QSystemTrayIcon>
 #include <QApplication>
 
 #include <QClipboard>
+#include <QSettings>
 #include <QMimeData>
 #include <QMenu>
 
@@ -30,24 +28,29 @@ public:
 
 private:
    QxtGlobalShortcut* m_globalShortCut;
-   CHistoryDialog* m_historyDialog;
    QClipboard* m_clipboard;
-   QJsonObject m_settings;
    QSqlDatabase m_db;
+
    QMenu m_menu;
+   QSettings m_settings;
+
+   CHistoryDialog* m_historyDialog;
 
 private:
-   void loadSettings();
+   void initializeSettings();
 
    void initializeDataBase();
    void initializeMenu();
    void initializeTray();
-   void initializeDialog();
+
+   void initializeHistoryDialog();
+   void initializeSettingsDialog();
 
    void showHistoryDialog();
+   void showSettingsDialog();
+
    void refreshTooltipText();
 
-   static QString getSettingsdPath();
    static QString getDataBasePath();
 
    void insertText(QString text);
@@ -55,6 +58,7 @@ private:
 
 public slots:
    void setItemToClipboard(const int& index);
+   void removeSavedItem(const int& index);
 
 private slots:
    void onClipboardChanged();

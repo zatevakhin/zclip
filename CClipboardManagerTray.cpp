@@ -5,37 +5,28 @@ CClipboardManagerTray::CClipboardManagerTray()
    : QSystemTrayIcon(Q_NULLPTR)
    , m_globalShortCut(new QxtGlobalShortcut(this))
    , m_clipboard(QApplication::clipboard())
+   , m_settings(
+        QSettings::IniFormat,
+        QSettings::UserScope,
+        QCoreApplication::organizationName(),
+        QCoreApplication::applicationName()
+        )
 {
-   loadSettings();
-
+   initializeSettings();
    initializeDataBase();
-   initializeDialog();
+
+   initializeHistoryDialog();
+
    initializeMenu();
    initializeTray();
 }
 
-void CClipboardManagerTray::loadSettings()
+void CClipboardManagerTray::initializeSettings()
 {
-   QByteArray json = NConstants::DEFAULT_SETTINGS;
-
-   QFile file(getSettingsdPath());
-   if (QFile::exists(getSettingsdPath()))
+   if (!m_settings.contains(NConstants::SHOW_HISTORY))
    {
-      if (file.open(QIODevice::ReadOnly))
-      {
-         json = file.readAll();
-      }
+      m_settings.setValue(NConstants::SHOW_HISTORY, "Alt+X");
    }
-   else
-   {
-      if (file.open(QIODevice::WriteOnly))
-      {
-         file.write(json);
-      }
-   }
-
-   QJsonDocument jsonDocument(QJsonDocument::fromJson(json));
-   m_settings = jsonDocument.object();
 }
 
 void CClipboardManagerTray::initializeDataBase()
@@ -80,13 +71,13 @@ void CClipboardManagerTray::initializeTray()
    refreshTooltipText();
 }
 
-void CClipboardManagerTray::initializeDialog()
+void CClipboardManagerTray::initializeHistoryDialog()
 {
    m_historyDialog = new CHistoryDialog();
 
    m_globalShortCut->setShortcut(
-            QKeySequence(m_settings["shortcut"].toString())
-         );
+            QKeySequence(m_settings.value(NConstants::SHOW_HISTORY).toString())
+            );
 
    QObject::connect(
             m_globalShortCut, &QxtGlobalShortcut::activated,
@@ -101,6 +92,11 @@ void CClipboardManagerTray::initializeDialog()
    QObject::connect(
             m_historyDialog, &CHistoryDialog::getItemById,
             this, &CClipboardManagerTray::setItemToClipboard
+            );
+
+   QObject::connect(
+            m_historyDialog, &CHistoryDialog::removeItemById,
+            this, &CClipboardManagerTray::removeSavedItem
             );
 }
 
@@ -119,21 +115,11 @@ void CClipboardManagerTray::refreshTooltipText()
 
    if (query.next()) {
       QString tooltip = QString(NConstants::TOOLTIP_TEXT_TEMPLATE)
-            .arg(m_settings["shortcut"].toString())
+            .arg(m_settings.value(NConstants::SHOW_HISTORY).toString())
             .arg(query.value(0).toInt());
 
       setToolTip(tooltip);
    }
-}
-
-QString CClipboardManagerTray::getSettingsdPath()
-{
-   auto dbPath = QString("%1%2%3")
-         .arg(QDir::homePath())
-         .arg(QDir::separator())
-         .arg(NConstants::SETTINGS_FILE);
-
-   return std::move(dbPath);
 }
 
 QString CClipboardManagerTray::getDataBasePath()
@@ -184,4 +170,14 @@ void CClipboardManagerTray::setItemToClipboard(const int &index)
    {
       m_clipboard->setText(query.value(0).toString());
    }
+}
+
+void CClipboardManagerTray::removeSavedItem(const int& index)
+{
+   QSqlQuery query;
+   query.prepare(QString(NConstants::DATABASE_REMOVE_ITEM)
+                 .arg(NConstants::TABLE_NAME));
+
+   query.bindValue(0, index);
+   query.exec();
 }

@@ -25,7 +25,7 @@ class CHistoryDialog : public QDialog
    Q_OBJECT
 
 public:
-   explicit CHistoryDialog();
+   CHistoryDialog();
    ~CHistoryDialog();
 
    void fillTable();
@@ -41,12 +41,15 @@ private:
    void initializeTableModel();
    void initializeSignals();
 
+
 private slots:
    void onSearch(const QString& query);
    void onItemSelected(const QModelIndex &index);
+   void onItemRemove(const QModelIndex &index);
 
 signals:
    void getItemById(const int& index);
+   void removeItemById(const int& index);
 
 };
 
