@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
    }
 
    QCoreApplication::setOrganizationName("zerosoft");
-   QCoreApplication::setOrganizationDomain("soft.nyanweb.od.ua");
+   QCoreApplication::setOrganizationDomain("soft.nyancode.net");
    QCoreApplication::setApplicationName("zClip");
 
    CClipboardManagerTray clipboardManager;
